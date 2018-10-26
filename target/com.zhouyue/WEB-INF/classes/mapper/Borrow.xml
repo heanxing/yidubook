@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.BorrowDao">
+
+
+    <!--进行借书，-->
+    <sql id="Base_Column_List">
+    id,User_id,book_Id,book_name,picUrl,location,Br_start,Br_stop,status
+
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO borrow (User_id,book_Id,Br_start,Br_stop,status) VALUES(#{User_id},#{book_Id},#{Br_start},#{Br_stop},#{status})
+    </insert>
+
+
+
+
+    <select id="selectBorrow" resultType="com.yi.du.bean.Borrow" parameterType="java.lang.Long">
+        SELECT b.*, book.bookName AS book_name , book.picUrl,book.location FROM borrow AS b LEFT JOIN book ON book.bookid=b.book_Id WHERE User_id =#{User_id}
+
+    </select>
+
+
+
+
+
+    <select id="selectBySuccess" resultType="com.yi.du.bean.Borrow" parameterType="java.lang.Long">
+        SELECT b.* , book.bookName AS book_name , book.picUrl,book.location   FROM borrow AS b LEFT  JOIN  book ON book.bookid=b.book_Id WHERE  status IN (0) AND User_id=#{User_id}
+    </select>
+
+    <select id="selectByStatus" resultType="com.yi.du.bean.Borrow" parameterType="java.lang.Long">
+       SELECT b.* , book.bookName AS book_name , book.picUrl,book.location   FROM borrow AS b LEFT  JOIN  book ON book.bookid=b.book_Id WHERE  status IN (1) AND User_id=#{User_id} ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultType="com.yi.du.bean.Borrow" parameterType="java.lang.Long">
+
+        SELECT * FROM borrow WHERE id = #{id}
+
+    </select>
+
+    <select id="selection" resultType="com.yi.du.bean.Borrow" parameterType="java.lang.Long">
+        SELECT b.* , book.bookName AS book_name , book.picUrl,book.location   FROM borrow AS b LEFT  JOIN  book ON book.bookid=b.book_Id  WHERE status IN (0,2) AND User_id=#{User_id}
+    </select>
+
+
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Borrow" parameterType="com.yi.du.bean.Borrow">
+        SELECT b.*, book.bookName AS book_name, book.picUrl, book.location FROM borrow
+        AS b LEFT JOIN book ON book.bookid=b.book_Id ORDER BY id DESC
+        <where>
+            <if test="id != null">b.id=#{id}</if>
+            <if test="User_id != null"> AND User_id=#{User_id}</if>
+            <if test="book_Id != null"> AND book_Id=#{book_Id}</if>
+            <if test="book_name != null"> AND book_name=#{book_name}</if>
+            <if test="picUrl != null"> AND picUrl=#{picUrl}</if>
+            <if test="location != null"> AND location=#{location}</if>
+            <if test="Br_start != null"> AND Br_start=#{Br_start}</if>
+            <if test="Br_stop != null"> AND Br_stop=#{Br_stop}</if>
+            <if test="status != null"> AND status=#{status}</if>
+        </where>
+    </select>
+
+
+
+    <update id="updateById" parameterType="com.yi.du.bean.Borrow">
+        UPDATE borrow
+        <set>
+            <if test="User_id != null">  User_id=#{User_id},</if>
+            <if test="book_Id != null">  book_Id=#{book_Id},</if>
+            <if test="Br_start != null">  Br_start=#{Br_start},</if>
+            <if test="Br_stop != null">  Br_stop=#{Br_stop},</if>
+            <if test="status != null">  status=#{status}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+
+
+    <delete id="deleteById">
+        DELETE FROM borrow WHERE id=#{id}
+    </delete>
+
+</mapper>
+
+
+

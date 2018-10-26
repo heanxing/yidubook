@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhuoyue.dao.GoodsDao">
+    <sql id="Base_Column_List">
+      id , user_open_id,user_amount,create_time,update_time,pay_password,is_open,check_key ,version
+
+    </sql>
+    <select id=" selectByOpenId" parameterType="java.lang.Long" resultType="com.yi.du.bean.Wallet">
+    SELECT  FROM account_wallet WHERE user_open_id=#{user_open_id}
+
+    </select>
+
+
+    <update id="updateGoodsUseCAS" parameterType="com.yi.du.bean.Wallet">
+        <![CDATA[
+    UPDATE goods SET status=#{status},name=#{name},
+    remaining_number=#{remaining_number},
+
+    version=version+1
+    WHERE
+    id=#{id} AND  version=#{version}
+
+                ]]>
+
+    </update>
+
+
+
+
+</mapper>

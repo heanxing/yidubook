@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.AppointDao">
+
+
+
+
+    <!--进行预约-->
+    <sql id="Base_Column_List">
+        id,User_id,B_id,bookName,author,press,picUrl,location,Htime,Stime,status
+
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO appoint(User_id,B_id,Stime,Htime,status) VALUES(#{User_id},#{B_id},#{Stime},#{Htime},#{status})
+    </insert>
+
+    <select id="selectUserId" resultType="com.yi.du.bean.Appoint" parameterType="java.lang.Long">
+       SELECT b.*, book.bookName  AS bookName, book.picUrl,book.location FROM appoint AS b LEFT JOIN book ON book.bookid=b.B_id WHERE User_id =#{User_id} ORDER BY id DESC
+
+    </select>
+
+    <select id="selectByStatus" resultType="com.yi.du.bean.Appoint" parameterType="java.lang.Integer">
+        SELECT * FROM appoint WHERE status=#{status} ORDER BY id DESC
+    </select>
+
+
+
+
+
+
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Appoint" parameterType="com.yi.du.bean.Appoint">
+        SELECT b.*, book.bookName AS bookName, book.picUrl, book.location FROM appoint
+        AS b LEFT JOIN book ON book.bookid=b.B_id ORDER BY id DESC
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="User_id != null">AND User_id=#{User_id}</if>
+            <if test="B_id != null">AND B_id=#{B_id}</if>
+            <if test="bookName != null">AND bookName=#{bookName}</if>
+            <if test="picUrl != null">AND picUrl=#{picUrl}</if>
+            <if test="author = null">AND author=#{author}</if>
+            <if test="press != null">AND press=#{press}</if>
+            <if test="location != null">AND location=#{location}</if>
+            <if test="Stime != null">AND Stime=#{Stime}</if>
+            <if test="Htime != null">AND Htime=#{Htime}</if>
+            <if test="status != null">AND status=#{status}</if>
+        </where>
+    </select>
+
+
+
+    <update id="updateById">
+        UPDATE appoint
+        <set>
+            <if test="User_id != null"> User_id=#{User_id},</if>
+            <if test="B_id != null" >B_id=#{B_id},</if>
+            <if test="bookName != null">bookName=#{bookName},</if>
+            <if test="author != null">author=#{author},</if>
+            <if test="picUrl != null">picUrl=#{picUrl},</if>
+            <if test="location != null">location=#{location},</if>
+            <if test="Stime != null"> Stime=#{Stime},</if>
+            <if test="Htime != null"> Htime=#{Htime},</if>
+            <if test="status != null"> status=#{status}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+
+
+
+
+
+
+    <delete id="deleteById">
+        DELETE FROM appoint WHERE id=#{id}
+    </delete>
+
+</mapper>
+
+
+

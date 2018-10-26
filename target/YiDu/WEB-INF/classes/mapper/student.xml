@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.StudentDao">
+
+    <!--对用户名进行增删改查-->
+    <sql id="Base_Column_List">
+        id,username,password
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO student(username,password) VALUES(#{username},#{password})
+    </insert>
+
+    <insert id="insertSelective">
+
+    </insert>
+
+    <select id="selectById">
+        SELECT  * FROM  student WHERE id=#{id}
+
+    </select>
+
+    <select id="selectByName" resultType="com.yi.du.bean.Student" parameterType="java.lang.String">
+        SELECT * FROM student WHERE username=#{username}
+
+    </select>
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Student" parameterType="com.yi.du.bean.Student">
+        SELECT * FROM student
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="username != null"> AND username=#{username}</if>
+            <if test="password != null"> AND password=#{password}</if>
+
+        </where>
+    </select>
+
+
+
+    <!--<resultMap type="com.du.beanser" id="userResultMap">-->
+        <!--<id property="id" column="id"/>-->
+        <!--<result property="userName" column="userName"/>-->
+        <!--<result property="password" column="password" />-->
+
+        <!--&lt;!&ndash;assocication可以指定联合的JavaBean对象-->
+            <!--property="role"指定哪个属性是联合的对象-->
+            <!--javaType:指定这个属性对象的类型-->
+        <!--&ndash;&gt;-->
+        <!--<association property="borrow" javaType="com.du.beanorrow">-->
+            <!--<id column="User_id" property="User_id"/>-->
+            <!--<result column="book_Id" property="book_Id"/>-->
+            <!--<result column="book_name" property="book_name"/>-->
+            <!--<result column=" picurl" property=" picurl"/>-->
+            <!--<result column="location" property="location"/>-->
+            <!--<result column=" Br_start" property=" Br_start"/>-->
+            <!--<result column="Br_stop" property="Br_stop"/>-->
+            <!--<result column="status" property="status"/>-->
+
+
+        <!--</association>-->
+    <!--</resultMap>-->
+
+    <!--<select id="getUserById" resultMap="userResultMap">-->
+        <!--select m.id id, m.loginId loginId, m.userName userName, m.roleId roleId,m.note note, n.id role_id, n.roleName roleName-->
+        <!--from t_user m left join t_role n on m.roleId=n.id-->
+        <!--where m.id=#{id}-->
+    <!--</select>-->
+
+
+
+
+
+
+    <update id="updateById">
+        UPDATE student
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="password != null">password=#{password}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+
+
+
+    <!--批量修改-->
+    <update id="batchUpdate"  parameterType="java.util.List">
+
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update student
+            <set>
+                username=#{item.username},
+                password=#{item.password}+
+            </set>
+            where id = ${item.id}
+        </foreach>
+
+    </update>
+
+
+
+    <delete id="deleteById">
+      DELETE FROM student WHERE id=#{id}
+    </delete>
+
+</mapper>
+
+
+

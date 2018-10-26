@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.SortDao">
+
+
+
+
+    <!--对图书进行增删改查-->
+    <sql id="Base_Column_List">
+        id,sname,image
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sort(sname,image) VALUES(#{sname},#{image})
+    </insert>
+
+    <insert id="insertSelective">
+
+    </insert>
+
+    <select id="selectById" resultType="com.yi.du.bean.Sort" parameterType="java.lang.Long">
+        SELECT * FROM sort WHERE id=#{id}
+
+    </select>
+
+    <select id="selectByBookName" resultType="com.yi.du.bean.Sort" parameterType="com.yi.du.bean.Sort">
+        SELECT * FROM sort
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="sname != null">AND sname=#{sname}</if>
+            <if test="image != null">AND image=#{image}</if>
+
+
+        </where>
+    </select>
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Sort" parameterType="com.yi.du.bean.Sort">
+        SELECT * FROM sort
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="sname != null">AND sname=#{sname}</if>
+            <if test="image != null">AND image=#{image}</if>
+        </where>
+    </select>
+
+    <select id="selectByExample" resultType="com.yi.du.bean.Sort" parameterType="com.yi.du.bean.Sort">
+        SELECT * FROM sort
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="sname != null">AND sname=#{sname}</if>
+            <if test="image != null">AND image=#{image}</if>
+        </where>
+    </select>
+
+
+
+    <select id="selectByList" resultType="com.yi.du.bean.Sort" parameterType="com.yi.du.bean.Sort" >
+        SELECT * FROM sort
+
+    </select>
+
+
+    <update id="updateById">
+        UPDATE sort
+        <set>
+            <if test="sname != null"> sname=#{sname},</if>
+            <if test="image != null"> image=#{image}</if>
+
+
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateByIdSelective">
+
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM sort WHERE id=#{id}
+    </delete>
+
+</mapper>
+
+
+

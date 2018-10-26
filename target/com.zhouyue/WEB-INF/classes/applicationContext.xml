@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:task="http://www.springframework.org/schema/task"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <context:annotation-config />
+    <!-- 配置component所在的包，自动加载需要管理的Bean -->
+    <context:component-scan base-package="com.yi.du.service,com.yi.du.dao" />
+    <import resource="spring-mybatis.xml" />
+    <import resource="spring-redis.xml" />
+
+    <context:component-scan base-package="com.yi.du.common,com.yi.du.Util" />
+
+    <!-- task任务扫描注解 -->
+    <task:annotation-driven />
+    <!-- 扫描任务 -->
+
+    <bean class="com.yi.du.Util.FileUploadUtils">
+        <property name="basePath" value="/server/yidu" />
+    </bean>
+
+    <context:property-placeholder location="classpath:jdbc-dev.properties"/>
+
+
+    <beans profile="test">
+        <context:property-placeholder location="classpath:jdbc-dev.properties" ignore-unresolvable="true" />
+    </beans>
+    <beans profile="dev">
+        <context:property-placeholder location="classpath*:jdbc-dev.properties" ignore-unresolvable="true" />
+    </beans>
+    <beans profile="product">
+        <context:property-placeholder location="classpath*:jdbc-product.properties" ignore-unresolvable="true" />
+    </beans>
+
+
+
+
+</beans>

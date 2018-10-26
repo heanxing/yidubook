@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.BookDao">
+
+
+
+
+    <!--对图书进行增删改查-->
+    <sql id="Base_Column_List">
+        id,bookid,bookName,author,picUrl,press,mount,location,sid,version
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO book (bookid,sid,bookName,author,picUrl,press,mount,location,version) VALUES(#{bookid},#{sid},#{bookName},#{author},#{picUrl},#{press},#{mount},#{location},#{version})
+    </insert>
+
+    <insert id="insertSelective">
+
+    </insert>
+
+
+    <select id="selectById" resultType="com.yi.du.bean.Book" parameterType="java.lang.Long">
+        SELECT * FROM book WHERE id=#{id}
+
+    </select>
+
+
+    <select id="selectByBookid" resultType="com.yi.du.bean.Book" parameterType="java.lang.Long">
+        SELECT * FROM book WHERE bookid=#{bookid}
+
+    </select>
+    <select id="selectByBookname" resultType="com.yi.du.bean.Book" parameterType="java.lang.String">
+        SELECT * FROM book WHERE bookName=#{bookName}
+    </select>
+
+
+
+
+    <select id="selectBySortId" resultType="com.yi.du.bean.Book" parameterType="java.lang.Long">
+        SELECT * FROM book WHERE sid=#{sid}
+
+    </select>
+
+
+
+        <!--</where>-->
+    <!--</select>-->
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Book" parameterType="com.yi.du.bean.Book">
+        SELECT * FROM book
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="bookid != null"> AND bookid=#{bookid}</if>
+            <if test="sid != null">AND sid=#{sid}</if>
+            <if test="bookName != null">AND bookName=#{bookName}</if>
+            <if test="author != null">AND author=#{author}</if>
+            <if test="picUrl != null">AND picUrl=#{picUrl}</if>
+            <if test="press != null">AND press=#{press}</if>
+            <if test="mount = null">AND mount=#{mount}</if>
+            <if test="location != null">AND location=#{location}</if>
+            <if test="version != null">AND version=#{version}</if>
+        </where>
+    </select>
+
+    <select id="selectByList" resultType="com.yi.du.bean.Book" parameterType="com.yi.du.bean.Book" >
+        SELECT * FROM book
+
+    </select>
+
+
+
+
+
+
+
+    <update id="updateById" parameterType="com.yi.du.bean.Book">
+        UPDATE book
+        <set>
+            <if test="sid != null"> sid=#{sid},</if>
+            <if test="bookName != null">bookName=#{bookName},</if>
+            <if test="author != null"> author=#{author},</if>
+            <if test="picUrl != null"> picUrl=#{picUrl},</if>
+            <if test="press != null"> press=#{press},</if>
+            <if test="mount != null"> mount=#{mount},</if>
+            <if test="location != null"> location=#{location},</if>
+            version=version+1
+        </set>
+        WHERE id=#{id} AND version=#{version}
+    </update>
+
+
+    <update id="updateByIdSelective" parameterType="java.util.List">
+
+             <![CDATA[
+    UPDATE book SET mount=#{mount},
+    version=version+1
+    WHERE
+
+    id=#{id} AND  version=#{version}
+
+                ]]>
+        
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM book WHERE id=#{id}
+    </delete>
+
+
+
+
+
+
+
+    <!--批量删除-->
+    <!--<delete id="deleteByIdSelective" parameterType="java.util.List">-->
+        <!--DELETE FROM  book WHERE  id IN-->
+        <!--<foreach collection="list" index="index" item="item" open="(" separator="," close=")">-->
+        <!--#{item.id}-->
+        <!--</foreach>-->
+
+    <!--</delete>-->
+
+</mapper>
+
+
+

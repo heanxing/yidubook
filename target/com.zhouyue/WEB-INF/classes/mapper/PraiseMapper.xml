@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.PraiseDao">
+
+    <select id="selectPraiseSum" resultType="com.yi.du.bean.Praise">
+        SELECT count(moments_id) as praiseSum FROM tbs_praise WHERE moments_id=#{moments_id}
+    </select>
+
+    <select id="selectById" resultType="com.yi.du.bean.Praise">
+        SELECT * FROM tbs_praise WHERE user_id=#{user_id} AND moments_id=#{moments_id}
+    </select>
+
+    <select id="selectById1" resultType="com.yi.du.bean.Praise">
+        SELECT * FROM tbs_praise WHERE  moments_id=#{moments_id}
+    </select>
+
+    <insert id="insert" parameterType="com.yi.du.bean.Praise">
+      INSERT INTO tbs_praise (user_id,moments_id) value (#{user_id},#{moments_id})
+    </insert>
+
+    <delete id="deleteById" parameterType="com.yi.du.bean.Praise">
+        DELETE FROM tbs_praise WHERE user_id=#{user_id} AND moments_id=#{moments_id}
+    </delete>
+
+</mapper>
+

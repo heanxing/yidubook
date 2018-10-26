@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.du.dao.MomentsDao">
+
+    <resultMap id="praiseResultMap" type="com.yi.du.bean.Moments">
+        <result column="moments_id" property="moments_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="createDateTime" property="createDateTime"/>
+        <result column="content" property="content"/>
+        <result column="imagePath" property="imagePath"/>
+        <result column="praise" property="praise"/>
+        <collection property="praises" column="moments_id" select="com.yi.du.dao.PraiseDao.selectById1"/>
+    </resultMap>
+
+    <select id="selectByCondition" resultType="com.yi.du.bean.Moments">
+        SELECT *,username FROM yidu.tbs_moments,yidu.tb_user
+        ORDER BY moments_id DESC
+    </select>
+
+    <select id="selectPraiseSum" resultType="com.yi.du.bean.Moments">
+        SELECT praise FROM tbs_moments tb WHERE tb.moments_id=#{moments_id}
+    </select>
+
+    <select id="selectById" resultType="com.yi.du.bean.Moments">
+        SELECT praise FROM tbs_moments WHERE moments_id=#{moments_id}
+    </select>
+
+    <insert id="insert" parameterType="com.yi.du.bean.Moments">
+      INSERT INTO tbs_moments (user_id,createDateTime,content,imagePath,praise) value (#{user_id},#{createDateTime},#{content},#{imagePath},#{praise})
+    </insert>
+
+    <update id="updateById" parameterType="com.yi.du.bean.Moments">
+        UPDATE  tbs_moments
+        <set>
+            <if test="praise != null">praise=#{praise}</if>
+        </set>
+        WHERE moments_id=#{moments_id}
+    </update>
+
+</mapper>
+
+
+
